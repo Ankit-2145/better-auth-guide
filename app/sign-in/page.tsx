@@ -1,55 +1,65 @@
-import Link from "next/link";
+"use client";
 
-const Signin = () => {
+import { Button } from "@/components/ui/button";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+const SignIn = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const router = useRouter();
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const { data } = await authClient.signIn.email(
+      {
+        email: email,
+        password: password,
+      },
+      {
+        onRequest: () => {
+          console.log("request in progress");
+        },
+        onSuccess: () => {
+          router.push("/dashboard");
+        },
+        onError: (ctx) => {
+          // display the error message
+          console.log(ctx.error.message);
+        },
+      }
+    );
+
+    console.log(data);
+  }
+
   return (
     <main>
       <div className="flex items-center justify-center min-h-[calc(100vh-64px)] px-4">
         <div className="w-full max-w-md">
           <div className="bg-card rounded-lg border border-border p-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">
-              Welcome Back
-            </h1>
-            <p className="text-muted-foreground mb-8">
-              Sign in to your account to continue
-            </p>
-
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  placeholder="you@example.com"
-                  className="w-full px-4 py-2 rounded-lg border border-border bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  placeholder="••••••••"
-                  className="w-full px-4 py-2 rounded-lg border border-border bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                />
-              </div>
-
-              <button className="w-full bg-primary text-primary-foreground py-2 rounded-lg hover:bg-primary/90 transition-colors font-medium">
-                Sign In
-              </button>
-            </div>
-
-            <p className="text-center text-muted-foreground text-sm mt-6">
-              New to Aurora?{" "}
-              <Link
-                href="/sign-up"
-                className="text-primary hover:underline font-medium"
-              >
-                Create an account
-              </Link>
-            </p>
+            <h1 className="text-2xl font-bold mb-6 text-foreground">Sign In</h1>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Your email"
+                className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+              <Button type="submit" className="w-full mt-2">
+                SignIn
+              </Button>
+            </form>
           </div>
         </div>
       </div>
@@ -57,4 +67,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default SignIn;

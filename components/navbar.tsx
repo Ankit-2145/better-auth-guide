@@ -4,16 +4,30 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
+  const router = useRouter();
+
   const navItems = [
     { label: "Home", href: "/" },
     { label: "Dashboard", href: "/dashboard" },
   ];
+
+  async function signOut() {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/sign-in"); // redirect to login page
+        },
+      },
+    });
+  }
 
   return (
     <nav className="sticky top-0 z-50 bg-background border-b border-border shadow-sm">
@@ -54,6 +68,13 @@ export default function Navbar() {
                 Sign Up
               </Button>
             </Link>
+
+            <Button
+              onClick={signOut}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground"
+            >
+              Sign Out
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
