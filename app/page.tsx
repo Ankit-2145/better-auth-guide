@@ -28,6 +28,7 @@ export default function Home() {
             <BetterAuthActionButton
               size="lg"
               variant="destructive"
+              className="cursor-pointer"
               successMessage="Signed out successfully"
               action={() => authClient.signOut()}
             >

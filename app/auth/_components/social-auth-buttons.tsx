@@ -15,6 +15,7 @@ export function SocialAuthButtons() {
       <BetterAuthActionButton
         key={provider}
         variant="outline"
+        successMessage="Signed In successfully"
         className="cursor-pointer"
         action={() => {
           return authClient.signIn.social({ provider, callbackURL: "/" });
