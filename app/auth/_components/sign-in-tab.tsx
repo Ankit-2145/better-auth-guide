@@ -52,7 +52,7 @@ export function SignInTab() {
         onSuccess: () => {
           router.push("/");
         },
-      }
+      },
     );
   }
 
@@ -85,7 +85,11 @@ export function SignInTab() {
           )}
         />
 
-        <Button type="submit" disabled={isSubmitting} className="w-full">
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full cursor-pointer"
+        >
           <LoadingSwap isLoading={isSubmitting}>Sign In</LoadingSwap>
         </Button>
       </form>

@@ -55,7 +55,7 @@ export function SignUpTab() {
           toast.success("Sign up successful");
           router.push("/");
         },
-      }
+      },
     );
   }
 
@@ -101,7 +101,11 @@ export function SignUpTab() {
           )}
         />
 
-        <Button type="submit" disabled={isSubmitting} className="w-full">
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full cursor-pointer"
+        >
           <LoadingSwap isLoading={isSubmitting}>Sign Up</LoadingSwap>
         </Button>
       </form>
