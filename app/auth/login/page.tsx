@@ -1,3 +1,8 @@
+"use client";
+
+import { useState } from "react";
+import { redirect } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 import {
   Card,
   CardContent,
@@ -10,29 +15,30 @@ import { SignUpTab } from "../_components/sign-up-tab";
 import { SignInTab } from "../_components/sign-in-tab";
 import { Separator } from "@/components/ui/separator";
 import { SocialAuthButtons } from "../_components/social-auth-buttons";
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import { headers } from "next/headers";
+import { EmailVerification } from "../_components/email-verification";
 
-export default async function LoginPage() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+type Tab = "signin" | "signup" | "email-verification";
 
-  if (session) {
-    redirect("/");
-  }
+export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [selectedTab, setSelectedTab] = useState<Tab>("signin");
 
   return (
-    <Tabs defaultValue="signin" className="max-w-xl mx-auto w-full my-6 px-4">
-      <TabsList>
-        <TabsTrigger className="cursor-pointer" value="signin">
-          Sign In
-        </TabsTrigger>
-        <TabsTrigger className="cursor-pointer" value="signup">
-          Sign Up
-        </TabsTrigger>
-      </TabsList>
+    <Tabs
+      value={selectedTab}
+      onValueChange={(t) => setSelectedTab(t as Tab)}
+      className="max-w-xl mx-auto w-full my-6 px-4"
+    >
+      {(selectedTab === "signin" || selectedTab === "signup") && (
+        <TabsList>
+          <TabsTrigger className="cursor-pointer" value="signin">
+            Sign In
+          </TabsTrigger>
+          <TabsTrigger className="cursor-pointer" value="signup">
+            Sign Up
+          </TabsTrigger>
+        </TabsList>
+      )}
       <TabsContent value="signin">
         <Card>
           <CardHeader className="text-2xl font-bold">
@@ -57,6 +63,17 @@ export default async function LoginPage() {
           </CardHeader>
           <CardContent>
             <SignUpTab />
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      <TabsContent value="email-verification">
+        <Card>
+          <CardHeader className="text-2xl font-bold">
+            <CardTitle>Verify Your Email</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <EmailVerification email={email} />
           </CardContent>
         </Card>
       </TabsContent>
