@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { redirect } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -16,12 +14,26 @@ import { SignInTab } from "../_components/sign-in-tab";
 import { Separator } from "@/components/ui/separator";
 import { SocialAuthButtons } from "../_components/social-auth-buttons";
 import { EmailVerification } from "../_components/email-verification";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 type Tab = "signin" | "signup" | "email-verification";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [selectedTab, setSelectedTab] = useState<Tab>("signin");
+
+  useEffect(() => {
+    authClient.getSession().then((session) => {
+      if (session.data != null) router.push("/");
+    });
+  }, [router]);
+
+  function openEmailVerificationTab(email: string) {
+    setEmail(email);
+    setSelectedTab("email-verification");
+  }
 
   return (
     <Tabs
@@ -62,7 +74,7 @@ export default function LoginPage() {
             <CardTitle>Sign Up</CardTitle>
           </CardHeader>
           <CardContent>
-            <SignUpTab />
+            <SignUpTab openEmailVerificationTab={openEmailVerificationTab} />
           </CardContent>
         </Card>
       </TabsContent>
