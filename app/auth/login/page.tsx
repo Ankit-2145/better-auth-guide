@@ -57,7 +57,7 @@ export default function LoginPage() {
             <CardTitle>Sign In</CardTitle>
           </CardHeader>
           <CardContent>
-            <SignInTab />
+            <SignInTab openEmailVerificationTab={openEmailVerificationTab} />
           </CardContent>
 
           <Separator />
