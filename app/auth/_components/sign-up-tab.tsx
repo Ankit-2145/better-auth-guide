@@ -3,7 +3,6 @@
 import z from "zod";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -31,8 +30,6 @@ export function SignUpTab({
 }: {
   openEmailVerificationTab: (email: string) => void;
 }) {
-  const router = useRouter();
-
   const form = useForm<SignUpForm>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -54,18 +51,11 @@ export function SignUpTab({
         onError: (error) => {
           toast.error(error.error.message || "Something went wrong");
         },
-
-        onSuccess: () => {
-          toast.success("Sign up successful");
-          router.push("/");
-        },
       },
     );
 
     if (res.error == null && !res.data.user.emailVerified) {
       openEmailVerificationTab(data.email);
-    } else {
-      router.push("/");
     }
   }
 
