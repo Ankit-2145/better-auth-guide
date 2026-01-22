@@ -27,8 +27,10 @@ type SignInForm = z.infer<typeof signInSchema>;
 
 export function SignInTab({
   openEmailVerificationTab,
+  openForgotPassword,
 }: {
   openEmailVerificationTab: (email: string) => void;
+  openForgotPassword: () => void;
 }) {
   const router = useRouter();
 
@@ -84,7 +86,18 @@ export function SignInTab({
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <div className="flex justify-between items-center">
+                <FormLabel>Password</FormLabel>
+                <Button
+                  onClick={openForgotPassword}
+                  type="button"
+                  variant="link"
+                  size="sm"
+                  className="text-sm font-normal underline"
+                >
+                  Forgot Password?
+                </Button>
+              </div>
               <FormControl>
                 <PasswordInput {...field} />
               </FormControl>

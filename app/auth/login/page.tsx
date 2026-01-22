@@ -14,10 +14,11 @@ import { SignInTab } from "../_components/sign-in-tab";
 import { Separator } from "@/components/ui/separator";
 import { SocialAuthButtons } from "../_components/social-auth-buttons";
 import { EmailVerification } from "../_components/email-verification";
+import { ForgotPassword } from "../_components/forgot-password";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
-type Tab = "signin" | "signup" | "email-verification";
+type Tab = "signin" | "signup" | "email-verification" | "forgot-password";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -57,7 +58,10 @@ export default function LoginPage() {
             <CardTitle>Sign In</CardTitle>
           </CardHeader>
           <CardContent>
-            <SignInTab openEmailVerificationTab={openEmailVerificationTab} />
+            <SignInTab
+              openEmailVerificationTab={openEmailVerificationTab}
+              openForgotPassword={() => setSelectedTab("forgot-password")}
+            />
           </CardContent>
 
           <Separator />
@@ -86,6 +90,17 @@ export default function LoginPage() {
           </CardHeader>
           <CardContent>
             <EmailVerification email={email} />
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      <TabsContent value="forgot-password">
+        <Card>
+          <CardHeader className="text-2xl font-bold">
+            <CardTitle>Forgot Password</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ForgotPassword openSignInTab={() => setSelectedTab("signin")} />
           </CardContent>
         </Card>
       </TabsContent>
