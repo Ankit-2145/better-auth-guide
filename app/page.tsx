@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth/auth-client";
+import Image from "next/image";
 
 export default function Home() {
   const { data: session, isPending: loading } = authClient.useSession();
@@ -23,6 +24,14 @@ export default function Home() {
           </>
         ) : (
           <>
+            <div className=" rounded-full overflow-hidden mx-auto w-24 h-24">
+              <Image
+                src={session.user.image as string}
+                alt={session.user.name}
+                width={100}
+                height={100}
+              />
+            </div>
             <h1 className="text-3xl font-bold">Welcome {session.user.name}!</h1>
             <Button
               size="lg"

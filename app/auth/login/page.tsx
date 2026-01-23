@@ -15,7 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { SocialAuthButtons } from "../_components/social-auth-buttons";
 import { EmailVerification } from "../_components/email-verification";
 import { ForgotPassword } from "../_components/forgot-password";
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth/auth-client";
 import { useRouter } from "next/navigation";
 
 type Tab = "signin" | "signup" | "email-verification" | "forgot-password";

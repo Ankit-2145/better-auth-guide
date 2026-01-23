@@ -2,10 +2,10 @@ import { db } from "@/drizzle/db";
 import { betterAuth } from "better-auth";
 import { nextCookies } from "better-auth/next-js";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { sendPasswordResetEmail } from "./emails/password-reset-email";
-import { sendEmailVerification } from "./emails/email-verification";
+import { sendPasswordResetEmail } from "../emails/password-reset-email";
+import { sendEmailVerification } from "../emails/email-verification";
 import { createAuthMiddleware } from "better-auth/api";
-import { sendWelcomeEmail } from "./emails/welcome-email";
+import { sendWelcomeEmail } from "../emails/welcome-email";
 
 export const auth = betterAuth({
   emailAndPassword: {
