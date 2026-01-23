@@ -1,13 +1,13 @@
 import { sendEmail } from "./send-email";
 
-export function sendEmailVerification({
+export async function sendEmailVerification({
   user,
   url,
 }: {
   user: { email: string; name: string };
   url: string;
 }) {
-  return sendEmail({
+  return await sendEmail({
     email: user.email,
     subject: "Verify your email address",
     html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
