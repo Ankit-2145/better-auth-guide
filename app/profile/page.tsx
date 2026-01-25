@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Key, LinkIcon, Shield, Trash2, ArrowLeft, User } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { ProfileUpdateForm } from "./_components/profile-update-form";
 
 export default async function ProfilePage() {
   const session = await auth.api.getSession({ headers: await headers() });
