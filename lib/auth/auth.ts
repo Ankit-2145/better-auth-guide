@@ -7,8 +7,9 @@ import { sendEmailVerification } from "../emails/email-verification";
 import { createAuthMiddleware } from "better-auth/api";
 import { sendWelcomeEmail } from "../emails/welcome-email";
 import { sendDeleteAccountVerificationEmail } from "../emails/delete-account-verification";
-import { twoFactor } from "better-auth/plugins";
+import { admin as adminPlugin, twoFactor } from "better-auth/plugins";
 import { passkey } from "@better-auth/passkey";
+import { ac, admin, user } from "@/components/auth/permissions";
 
 export const auth = betterAuth({
   user: {
@@ -74,7 +75,18 @@ export const auth = betterAuth({
       maxAge: 60, // 1 minutes
     },
   },
-  plugins: [nextCookies(), twoFactor(), passkey()],
+  plugins: [
+    nextCookies(),
+    twoFactor(),
+    passkey(),
+    adminPlugin({
+      ac,
+      roles: {
+        admin,
+        user,
+      },
+    }),
+  ],
   database: drizzleAdapter(db, {
     provider: "pg",
   }),
