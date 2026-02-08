@@ -6,24 +6,24 @@ import { BetterAuthActionButton } from "@/components/auth/better-auth-action-but
 
 export function EmailVerification({ email }: { email: string }) {
   const [timeToNextResend, setTimeToNextResend] = useState(30);
-  const interval = useRef<NodeJS.Timeout>(undefined);
+  const interval = useRef<NodeJS.Timeout | null>(null);
 
+  // Effect ONLY manages the timer (external system ✅)
   useEffect(() => {
-    startEmailVerificationCountdown();
-  }, []);
+    if (timeToNextResend <= 0) return;
 
-  function startEmailVerificationCountdown(time = 30) {
-    setTimeToNextResend(time);
     interval.current = setInterval(() => {
-      setTimeToNextResend((t) => {
-        const newT = t - 1;
-        if (newT <= 0) {
-          clearInterval(interval.current);
-          return 0;
-        }
-        return newT;
-      });
+      setTimeToNextResend((t) => t - 1);
     }, 1000);
+
+    return () => {
+      if (interval.current) clearInterval(interval.current);
+    };
+  });
+  // runs when countdown starts again
+
+  function restartCountdown(time = 30) {
+    setTimeToNextResend(time);
   }
 
   return (
@@ -39,7 +39,7 @@ export function EmailVerification({ email }: { email: string }) {
         successMessage="Verification email sent!"
         disabled={timeToNextResend > 0}
         action={() => {
-          startEmailVerificationCountdown();
+          restartCountdown();
           return authClient.sendVerificationEmail({
             email,
             callbackURL: "/",
