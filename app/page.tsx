@@ -41,6 +41,11 @@ export default function Home() {
               <Button asChild size="lg">
                 <Link href="/organizations">Organizations</Link>
               </Button>
+
+              <Button onClick={() => authClient.checkout({ slug: "pro" })}>
+                Polar Payments
+              </Button>
+
               {hasAdminPermission && (
                 <Button variant="outline" asChild size="lg">
                   <Link href="/admin">Admin</Link>

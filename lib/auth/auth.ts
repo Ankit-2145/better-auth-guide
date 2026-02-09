@@ -16,14 +16,8 @@ import { desc, eq } from "drizzle-orm";
 import { member } from "@/drizzle/schema";
 
 // Polar
-import { Polar } from "@polar-sh/sdk";
-import {
-  polar,
-  checkout,
-  portal,
-  usage,
-  webhooks,
-} from "@polar-sh/better-auth";
+import { polar, checkout, portal, usage } from "@polar-sh/better-auth";
+import { polarClient } from "../polar";
 
 // Emails
 import { sendWelcomeEmail } from "../emails/welcome-email";
@@ -32,14 +26,6 @@ import { sendPasswordResetEmail } from "../emails/password-reset-email";
 import { sendOrganizationInviteEmail } from "../emails/organization-invite-email";
 import { sendDeleteAccountVerificationEmail } from "../emails/delete-account-verification";
 import { ac, admin, user } from "@/components/auth/permissions";
-
-const polarClient = new Polar({
-  accessToken: process.env.POLAR_ACCESS_TOKEN,
-  // Use 'sandbox' if you're using the Polar Sandbox environment
-  // Remember that access tokens, products, etc. are completely separated between environments.
-  // Access tokens obtained in Production are for instance not usable in the Sandbox environment.
-  server: "sandbox",
-});
 
 export const auth = betterAuth({
   appName: "Better Auth Guide",
@@ -139,15 +125,11 @@ export const auth = betterAuth({
         checkout({
           products: [
             {
-              productId: "575ec29d-5d7b-4c72-82dc-39b5bc428695",
+              productId: "84828e4c-91ed-4543-a300-3d5c10595736",
               slug: "pro",
             },
-            {
-              productId: "3b70eae9-8f5a-4013-b48a-8f781dbfd92c",
-              slug: "pro-max",
-            },
           ],
-          successUrl: "/success?checkout_id={CHECKOUT_ID}",
+          successUrl: "http://localhost:3000",
           authenticatedUsersOnly: true,
         }),
         portal(),
